@@ -3,112 +3,115 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <time.h>
+using namespace std;
 
 
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Actor::Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :GraphObject(imageID, startX, startY, dir, size, depth), isAlive(true), world(p),health(100)
+Actor::Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : 
+	GraphObject(imageID, startX, startY, dir, size, depth), isAlive(true), world(p), health(100)
 {
 	setVisible(true);
 	setAlive(true);
 }
 
-bool Actor::getAlive(){
+Actor::~Actor(){}
+ 
+void Actor::doSomething(){}
+
+bool Actor::getAlive() {
 	return isAlive;
 }
-void Actor::setAlive(bool Is){
+void Actor::setAlive(bool Is) {
 	isAlive = Is;
 }
-StudentWorld *Actor::getWorld(){
+StudentWorld *Actor::getWorld() {
 	return world;
 }
-Actor::~Actor()
-{
-	
-}
-void Actor::doSomething()
-{
 
-}
-void Actor::setHealth(int health_)
-{
+void Actor::setHealth(int health_) {
 	health = health_;
 }
 
-bool Actor::isDirtThere() {
-	int x = getX(), y = getY();
+bool Actor::isDirtThere(int x, int y, GraphObject::Direction direction) {
 
-	if (getDirection() == GraphObject::Direction::left) {
-		if (y < 57)
-		{
-
-			if ((getWorld()->getDirt(x - 1, y)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
-				return true;
+	if (direction == left) {
+		if (x > 0) {
+			if (y < 57)
+			{
+				if ((getWorld()->getDirt(x - 1, y)->getAlive())
+					|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
+					|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
+					|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
+					return true;
+			}
+			else if (y == 57) {
+				if (getWorld()->getDirt(x - 1, y)->getAlive()
+					|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
+					|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
+					return true;
+			}
+			else if (y == 58) {
+				if (getWorld()->getDirt(x - 1, y)->getAlive()
+					|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
+					return true;
+			}
+			else if (y == 59) {
+				if (getWorld()->getDirt(x - 1, y)->getAlive())
+					return true;
+			}
 		}
-		if (y == 59) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive())
-				return true;
-		}
-		else if (y == 58) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
-				return true;
-		}
-		else if (y == 57) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
-				return true;
-		}
+		else return true;
 	}
-	else if (getDirection() == GraphObject::Direction::right) {
-		if (y < 57) {
-			if ((getWorld()->getDirt(x + 1, y)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
-				return true;
+	else if (direction == right) {
+		if (x < 60) {
+			if (y < 57) {
+				if ((getWorld()->getDirt(x + 1, y)->getAlive())
+					|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+					|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
+					|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
+					return true;
+			}
+			else if (y == 57) {
+				if (getWorld()->getDirt(x + 1, y)->getAlive()
+					|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
+					|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
+					return true;
+			}
+			else if (y == 58) {
+				if (getWorld()->getDirt(x + 1, y)->getAlive()
+					|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
+					return true;
+			}
+			else if (y == 59) {
+				if (getWorld()->getDirt(x + 1, y)->getAlive())
+					return true;
+			}
 		}
-		if (y == 59) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y)->getAlive())
-				return true;
-		}
-		else if (y == 58) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
-				return true;
-		}
-		else if (y == 57) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
-				return true;
-		}
+		else return true;
 	}
-	else if (getDirection() == GraphObject::Direction::down) {
-		if (y - 1 < 60) {
+	else if (direction == down) {
+		if (y > 0) {
 			if ((getWorld()->getDirt(x, y - 1)->getAlive())
 				|| (getWorld()->getDirt(x + 1, y - 1)->getAlive())
 				|| (getWorld()->getDirt(x + 2, y - 1)->getAlive())
 				|| (getWorld()->getDirt(x + 3, y - 1)->getAlive()))
 				return true;
 		}
+		else return true;
 	}
-	else if (getDirection() == GraphObject::Direction::up) {
-		if (y < 57)
+	else if (direction == up) {
+		if (y < 60)
 		{
 			if ((getWorld()->getDirt(x, y + 1)->getAlive())
 				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
 				|| (getWorld()->getDirt(x + 2, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 4, y + 1)->getAlive()))
+				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive()))
 				return true;
 		}
+		else return true;
 	}
 	return false;
 }
@@ -116,31 +119,21 @@ bool Actor::isDirtThere() {
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Dirt::Dirt(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
-{
-	
-}
+Dirt::Dirt(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth){}
 
-Dirt::~Dirt()
-{
-	
-}
-void Dirt::doSomething()
-{
-	//doesn't do anything as said in specs.
-}
+Dirt::~Dirt(){}
+
+void Dirt::doSomething(){}
 
 //////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
-{
-	
-}
+DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth){}
 
-DiggerMan::~DiggerMan()
-{
-}
+DiggerMan::~DiggerMan(){}
+
 void DiggerMan::doSomething()
 {
 	int x = getX();
@@ -246,12 +239,11 @@ void DiggerMan::doSomething()
 
 }
 //////////////////////////////////////////////////////////////  BOULDER  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Boulder::Boulder(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0),fell(false) {
-	
-}
-Boulder::~Boulder(){
-	
-}
+Boulder::Boulder(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth),count(0),fell(false) {}
+
+Boulder::~Boulder(){}
+
 void Boulder::doSomething() {
 	if (getAlive())
 	{
@@ -336,9 +328,7 @@ void GoldNugget::doSomething()
 		else
 			return;
 }
-GoldNugget::~GoldNugget()
-{
-}
+GoldNugget::~GoldNugget() {}
 
 
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -375,13 +365,12 @@ void Oil::doSomething() {
 	else 
 		return;
 }
-Oil::~Oil() {
-	
-}
+Oil::~Oil() {}
+
 //////////////////////////////////////////////////////////////  SONAR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
-	
-}
+Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth),count(0) {}
+
 void Sonar::doSomething() {
 	if (getAlive()) {
 		count++;
@@ -409,14 +398,11 @@ void Sonar::doSomething() {
 	else return;
 }
 
-Sonar::~Sonar() {
-
-}
+Sonar::~Sonar() {}
 
 //////////////////////////////////////////////////////////////  WATERPOOLS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
-
-}
+Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth),count(0) {}
 
 void Water::doSomething() {
 	if (getAlive()) {
@@ -445,29 +431,29 @@ void Water::doSomething() {
 	else return;
 }
 
-Water::~Water() {
-
-}
+Water::~Water() {}
 
 //////////////////////////////////////////////////////////////  SQUIRT  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Squirt::Squirt(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
-
-}
+Squirt::Squirt(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth) {}
 
 void Squirt::doSomething() {
 
 }
 
-Squirt::~Squirt() {
-	
-}
+Squirt::~Squirt() {}
 
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),tickCounter(0),direction_integer(1)
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(p, imageID, startX, startY, dir, size, depth),tickCounter(0),direction_integer(0)
 {
+	setDirection(left);
 	leaveOilFieldState = false;
 	setHealth(5);
+	srand(time(NULL));
+	numSquaresMovedInCurrentDirection = 0;
+	my_min = rand() % (60 - getX() + 1) + 15;
 }
 
 void RegularProtestor::setLeaveOilFieldState(bool state)
@@ -518,7 +504,7 @@ void RegularProtestor::doSomething()
 	{
 		if (canMovePerpendicular()) return;
 		wander();
-		numSquaresToMoveInCurrentDirection--;
+		numSquaresMovedInCurrentDirection++;
 	}
 		
 
@@ -540,7 +526,7 @@ bool RegularProtestor::canMovePerpendicular()
 			moveTo(getX(), getY());
 			//moveTo(getX(), getY()-1);
 			setDirection(down);
-			numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
+			//numSquaresMovedInCurrentDirection = rand() % 58 + 6;
 			return 1;
 		}
 	}
@@ -558,102 +544,105 @@ bool RegularProtestor::canMovePerpendicular()
 	}
 	return 0;
 }
-
-void RegularProtestor::wander()
-{
+void RegularProtestor::move(GraphObject::Direction direction) {
 	int x = getX();
 	int y = getY();
-
-	if (numSquaresToMoveInCurrentDirection <= 0)//we need to switch directions
-	{
-
-		direction_integer = rand() % 4;
-		switchDirection(direction_integer);
-		numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
-		return;
-	}
-
-
-	switch (direction_integer) {
-
-	case 0:
-		if (x < 1 || isDirtThere())
-		{
-
-			numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
-			break;
-		}
-		if (!isDirtThere())
-			moveTo(x - 1, y);
-		else numSquaresToMoveInCurrentDirection = 0;
-		break;
-	case 1:
-		if (x > 59 || isDirtThere())
-		{
-
-			numSquaresToMoveInCurrentDirection = 0;
-			break;
-		}
-		if (!isDirtThere())
-			moveTo(x + 1, y);
-		else numSquaresToMoveInCurrentDirection = 0;
-		break;
-	case 2:
-		if (y > 59 || isDirtThere())
-		{
-
-			numSquaresToMoveInCurrentDirection = 0;
-			break;
-		}
-		if (!isDirtThere())
-			moveTo(x, y + 1);
-		else numSquaresToMoveInCurrentDirection = 0;
-		break;
-	case 3:
-		if (y < 1 || isDirtThere())
-		{
-
-			numSquaresToMoveInCurrentDirection = 0;
-			break;
-		}
-		if (!isDirtThere())
-			moveTo(x, y - 1);
-		else numSquaresToMoveInCurrentDirection = 0;
-		break;
-
-	}
+	if (direction == left)
+		moveTo(x - 1, y);
+	if (direction == right)
+		moveTo(x + 1, y);
+	if (direction == up)
+		moveTo(x, y + 1);
+	if (direction == down)
+		moveTo(x, y - 1);
 }
-
-
-
-void RegularProtestor::switchDirection(int direction)
+void RegularProtestor::wander()
 {
-	switch (direction)
-	{
-	case 0:
-		setDirection(left);
-		break;
-	case 1:
-		setDirection(right);
-		break;
-	case 2:
-		setDirection(up);
-		break;
-	case 3:
-		setDirection(down);
-		break;
+	GraphObject::Direction direction = getDirection();
+	//want to wander where it only turns to a place with no dirt
+	int x = getX();
+	int y = getY();
+	bool directions[4] = { false };
+	//i think the best way to do this is to check around all 4 directions and then if there is a path then randomly go down one of those instead of
+	//checking each direction one at a time and going to one of them because then all of the protestors will go in the same direction
+	if (!isDirtThere(x, y, left) && x > 0) {
+		directions[0] = true;
 	}
+	if (!isDirtThere(x + 3, y, right) && x < 60) {
+		directions[1] = true;
+	}
+	if (!isDirtThere(x, y + 3, up) && y < 60) {
+		directions[2] = true;
+	}
+	if (!isDirtThere(x, y, down) && y > 0) {
+		directions[3] = true;
+	}
+	vector<int> options;
+	for (int i = 0; i < 4; i++) {
+		if (directions[i] == true)
+			options.push_back(i);
+	}
+
+	direction_integer = rand() % options.size();
+
+	direction_integer = options[direction_integer];
+
+	if (direction_integer == 0 && x > 0) {
+		if(direction == left)
+			move(left);
+		else if (direction != left && numSquaresMovedInCurrentDirection > my_min || isDirtThere(x, y, direction)) {
+			setDirection(left);
+			move(left);
+			numSquaresMovedInCurrentDirection = 0;
+			my_min = rand() % 60 + 15;
+		}
+		else
+			move(direction);
+	} 
+	
+	else if (direction_integer == 1 && x < 60) {//right
+		if (direction == right)
+			move(right);
+		else if (direction != right && numSquaresMovedInCurrentDirection > my_min || isDirtThere(x, y, direction)) {
+			setDirection(right);
+			move(right);
+			numSquaresMovedInCurrentDirection = 0;
+			my_min = rand() % 60 + 15;
+		}
+		else
+			move(direction);
+	}
+	else if (direction_integer == 2 && y < 60) {//up
+		if (direction == up)
+			move(up);
+		else if (direction != up && numSquaresMovedInCurrentDirection > my_min || isDirtThere(x, y, direction)) {
+			setDirection(up);
+			move(up);
+			numSquaresMovedInCurrentDirection = 0;
+			my_min = rand() % 60 + 15;
+		}
+		else
+			move(direction);
+	}
+	else if (direction_integer == 3 && y > 0) {// down
+		if (direction == down)
+			move(down);
+		else if (direction != down && numSquaresMovedInCurrentDirection > my_min || isDirtThere(x, y, direction)) {
+			setDirection(down);
+			move(down);
+			numSquaresMovedInCurrentDirection = 0;
+			my_min = rand() % 60 + 15;
+		}
+		else
+			move(direction);
+	}
+	
 }
-
-
-
 
 RegularProtestor::~RegularProtestor()
 {
 
 }
-
-
 
 ////////////////////////////////////////////////////////////// HARDCORE PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

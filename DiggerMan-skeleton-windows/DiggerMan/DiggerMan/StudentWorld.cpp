@@ -29,7 +29,6 @@ int StudentWorld::move()
 		actors[i]->doSomething();
 		if (m_barrels == 0)
 			return GWSTATUS_FINISHED_LEVEL;
-		
 	}
 		if (!m_diggerman->getAlive()) {
 		decLives();

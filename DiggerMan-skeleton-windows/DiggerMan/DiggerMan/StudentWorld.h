@@ -71,13 +71,17 @@ public:
 	int getSonar() { return m_sonar; }
     
     void incGold(){ m_gold++; return; }
+
 	void decBarrels() { m_barrels--; return; }
+
 	void incSonar() { m_sonar++; }
 	void decSonar() { m_sonar--; }
 	void decSonarInMap() { sonarInMap--; }
+
 	void incWater() { m_water+=5; }
 	void decWater() { m_water--; }
 	void decWaterInMap() { waterInMap--; }
+
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();
 	void addBarrel();

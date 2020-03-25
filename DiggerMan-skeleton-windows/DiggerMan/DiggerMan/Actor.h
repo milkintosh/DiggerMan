@@ -19,7 +19,7 @@ public:
 	StudentWorld * getWorld();
 	virtual ~Actor();
 	virtual void doSomething() = 0;
-	bool isDirtThere();
+	bool isDirtThere(int x, int y, GraphObject::Direction);
 };
 
 class Dirt : public Actor
@@ -95,10 +95,12 @@ class RegularProtestor : public Actor
 {
 private:
 	bool leaveOilFieldState;
-	int numSquaresToMoveInCurrentDirection;
+	int numSquaresMovedInCurrentDirection;
 	int tickCounter ;
 	int direction_integer;
+	int my_min;
 public:
+	void move(GraphObject::Direction);
 	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
 	bool getLeaveOilFieldState();
