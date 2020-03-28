@@ -4,6 +4,8 @@
 #include "GameWorld.h"
 #include "GameConstants.h"
 #include "Actor.h"
+#include "Diggerman.h"
+#include "Protestor.h"
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -75,11 +77,23 @@ public:
 	void decBarrels() { m_barrels--; return; }
 
 	void incSonar() { m_sonar++; }
-	void decSonar() { m_sonar--; }
+	bool decSonar() {
+		if (m_sonar > 0) {
+			m_sonar--;
+			return true;
+		}
+		return false;
+	}
 	void decSonarInMap() { sonarInMap--; }
 
 	void incWater() { m_water+=5; }
-	void decWater() { m_water--; }
+	bool decWater() {
+		if (m_water > 0) {
+			m_water--;
+			return true;
+		}
+		return false;
+	}
 	void decWaterInMap() { waterInMap--; }
 
 	bool checkDistance(int x, int y);

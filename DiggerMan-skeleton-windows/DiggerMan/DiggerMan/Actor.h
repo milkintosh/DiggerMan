@@ -3,7 +3,9 @@
 
 #include "GraphObject.h"
 #include <algorithm>
+
 class StudentWorld;
+
 class Actor : public GraphObject
 {
 private:
@@ -31,14 +33,6 @@ public:
 	~Dirt();
 };
 
-class DiggerMan : public Actor
-{
-private:
-public:
-	DiggerMan(StudentWorld *p,int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
-	void doSomething();
-	~DiggerMan();
-};
 
 class Boulder : public Actor
 {
@@ -91,39 +85,14 @@ public:
 	~Squirt();
 };
 
-class RegularProtestor : public Actor
-{
-private:
-	bool leaveOilFieldState;
-	int numSquaresMovedInCurrentDirection;
-	int tickCounter ;
-	int direction_integer;
-	int my_min;
-public:
-	void move(GraphObject::Direction);
-	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
-	void doSomething();
-	bool getLeaveOilFieldState();
-	void setLeaveOilFieldState(bool);
-	void setTickCounter(int);
-	int getTickCounter() { return tickCounter; }
-	void wander();
-	void switchDirection(int);
-	void leaveOilField();
-	bool canMovePerpendicular();
-	//void movePerpendicular();
-	//bool isDirtThere();
-	~RegularProtestor();
-};
-
-class HardcoreProtestor : public RegularProtestor
-{
-private:
-public:
-	HardcoreProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
-	void doSomething();
-	~HardcoreProtestor();
-};
+//class HardcoreProtestor : public RegularProtestor
+//{
+//private:
+//public:
+//	HardcoreProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
+//	void doSomething();
+//	~HardcoreProtestor();
+//};
 
 class GoldNugget :public Actor {
 	private:

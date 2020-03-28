@@ -1,4 +1,8 @@
 ﻿  Actor.cpp
-c:\users\sharon kim\documents\github\diggerman\diggerman-skeleton-windows\diggerman\diggerman\actor.cpp(454): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\sharon kim\documents\github\diggerman\diggerman-skeleton-windows\diggerman\diggerman\actor.cpp(586): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Diggerman.cpp
+  Protestor.cpp
+c:\users\sharon kim\documents\github\diggerman\diggerman-skeleton-windows\diggerman\diggerman\protestor.cpp(10): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  StudentWorld.cpp
+  Generating Code...
+c:\users\sharon kim\documents\github\diggerman\diggerman-skeleton-windows\diggerman\diggerman\studentworld.cpp(437): warning C4715: 'StudentWorld::isBoulderThere': not all control paths return a value
   DiggerMan.vcxproj -> C:\Users\Sharon Kim\Documents\GitHub\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe

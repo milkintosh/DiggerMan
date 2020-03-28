@@ -132,9 +132,9 @@ void StudentWorld::addProtestors()
 	int ticksUntilAdd = max(25, 200 - current_level);//at least this many ticks before another protestor added
 	int numProtestors = min(15, 2+(int)(current_level*1.5));
 	if(tickCount==ticksUntilAdd && m_protestors<numProtestors){
-		int G = current_level * 25 + 300;
+		int G = current_level * 25 + 300;/*
 		if (1==rand()%G)
-			actors.push_back(new HardcoreProtestor(this, IMID_PROTESTER, 60, 60));
+			actors.push_back(new HardcoreProtestor(this, IMID_PROTESTER, 60, 60));*/
 		//one in current_level * 25 + 300 chance it's a hardcore protestor(don't know if this works)
 		actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 60, 60));
 		m_protestors++;
@@ -346,7 +346,7 @@ bool StudentWorld::isThere(){
 bool StudentWorld::isBoulderThere() {
 	for (unsigned int j = 0; j < actors.size(); j++)
 	{
-		if (typeid(*(actors[j])) == typeid(RegularProtestor) || typeid(*(actors[j])) == typeid(HardcoreProtestor))
+		if (typeid(*(actors[j])) == typeid(RegularProtestor) /*|| typeid(*(actors[j])) == typeid(HardcoreProtestor)*/)
 		{	
 			int x = actors[j]->getX();
 			int y = actors[j]->getY();
