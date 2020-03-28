@@ -6,6 +6,7 @@
 #include <time.h>
 using namespace std;
 
+class RegularProtestor;
 
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -151,14 +152,25 @@ void Boulder::doSomething() {
 					if (fell==false)//if this is the first time the boulder has moved at all
 						getWorld()->playSound(SOUND_FALLING_ROCK);//play the sound once
 					moveTo(x, y - 1);
-					int BX = getWorld()->getDiggerman()->getX();
-					int BY = getWorld()->getDiggerman()->getY();
-					double SR = pow((pow(abs(x - BX), 2) + pow(y - BY, 2)), 0.5);
+					int DiggermanX = getWorld()->getDiggerman()->getX();
+					int DiggermanY = getWorld()->getDiggerman()->getY();
+					double SR = pow((pow(abs(x - DiggermanX), 2) + pow(y - DiggermanY, 2)), 0.5);
 					if (SR <= 3.0) {
 						getWorld()->getDiggerman()->setVisible(false); //this is when the diggerman gets hit by the boulder, use this to check protestors as well
 						getWorld()->getDiggerman()->setAlive(false);
 					}
-					//getWorld()->BoulderHitDig();
+					vector<Actor*> actors = getWorld()->getActors();
+					for (auto it = actors.begin(); it != actors.end(); ++it) {
+						if (typeid(*it) == typeid(RegularProtestor)) {
+							int ProtestorX = (*it)->getX();
+							int ProtestorY = (*it)->getY();
+							double SR = pow((pow(abs(x - ProtestorX), 2) + pow(y - ProtestorY, 2)), 0.5);
+							if (SR <= 3.0) {
+								(*it)->setVisible(false); //this is to check protestors?
+								(*it)->setAlive(false);
+							}
+						}
+					}
 					fell = true;//this also helps get rid of the boulder
 				}
 			}
